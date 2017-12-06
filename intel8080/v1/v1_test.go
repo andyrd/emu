@@ -1,9 +1,10 @@
 package v1
 
 import (
-	ops "emu/intel8080"
 	"testing"
 	"time"
+
+	ops "github.com/andyrd/emu/intel8080"
 )
 
 // repurpose an unused opcode to termiate the test

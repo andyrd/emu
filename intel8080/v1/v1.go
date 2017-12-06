@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"emu/intel8080"
+	"github.com/andyrd/emu/intel8080"
 )
 
 const (

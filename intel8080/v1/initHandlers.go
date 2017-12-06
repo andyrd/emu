@@ -1,6 +1,6 @@
 package v1
 
-import ops "emu/intel8080"
+import ops "github.com/andyrd/emu/intel8080"
 
 func (v *v1) initHandlers() {
 	v.handlers[ops.NOP] = v.NOP
