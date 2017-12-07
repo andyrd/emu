@@ -105,6 +105,41 @@ func TestDCR_B(t *testing.T) {
 	}
 }
 
+func TestMVI_B_D8(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MVI_B_D8,
+		0xF5,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.B != 0xF5 {
+		t.Fatal("Invalid value in register B")
+	}
+}
+
+func TestRLC(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.RLC,
+		terminateOp,
+	})
+
+	cpu.state.A = 0xAA
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid Flags value")
+	}
+
+	if cpu.state.A != 0x55 {
+		t.Fatal("Invalid value in register A")
+	}
+}
+
 func initTest(memory []byte) *v1 {
 	s := ops.State{
 		Memory: memory,

@@ -11,11 +11,11 @@ const (
 	zeroFlag      byte = 0x40
 	signFlag      byte = 0x80
 
-	carryFlagBit     byte = 0
-	parityFlagBit    byte = 2
-	halfCarryFlagBit byte = 4
-	zeroFlagBit      byte = 6
-	signFlagBit      byte = 7
+	carryFlagPos     byte = 0
+	parityFlagPos    byte = 2
+	halfCarryFlagPos byte = 4
+	zeroFlagPos      byte = 6
+	signFlagPos      byte = 7
 )
 
 type opCodeHandler func()
