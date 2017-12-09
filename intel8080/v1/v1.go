@@ -10,12 +10,6 @@ const (
 	halfCarryFlag byte = 0x10
 	zeroFlag      byte = 0x40
 	signFlag      byte = 0x80
-
-	carryFlagPos     byte = 0
-	parityFlagPos    byte = 2
-	halfCarryFlagPos byte = 4
-	zeroFlagPos      byte = 6
-	signFlagPos      byte = 7
 )
 
 type opCodeHandler func()
@@ -125,6 +119,6 @@ func (v *v1) WAIT() <-chan intel8080.State {
 	return v.wait
 }
 
-func (v *v1) setFlag(flagBit byte, value byte) {
-	v.state.Flags = v.state.Flags & ^(1<<flagBit) | (value << flagBit)
-}
+// func (v *v1) setFlag(flagBit byte, value byte) {
+// 	v.state.Flags = v.state.Flags & ^(1<<flagBit) | (value << flagBit)
+// }

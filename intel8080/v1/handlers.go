@@ -26,20 +26,20 @@ func (v *v1) INX_B() {
 
 func (v *v1) INR_B() {
 	result := v.state.B + 1
-	v.setFlag(halfCarryFlagPos, halfCarryAdd(v.state.B, 1))
-	v.setFlag(parityFlagPos, parity(result))
-	v.setFlag(zeroFlagPos, zero(result))
-	v.setFlag(signFlagPos, sign(result))
+	v.halfCarryAdd(v.state.B, 1)
+	v.parity(result)
+	v.zero(result)
+	v.sign(result)
 	v.state.B = result
 	v.cycles -= 5
 }
 
 func (v *v1) DCR_B() {
 	result := v.state.B - 1
-	v.setFlag(halfCarryFlagPos, halfCarrySub(v.state.B, 1))
-	v.setFlag(parityFlagPos, parity(result))
-	v.setFlag(zeroFlagPos, zero(result))
-	v.setFlag(signFlagPos, sign(result))
+	v.halfCarrySub(v.state.B, 1)
+	v.parity(result)
+	v.zero(result)
+	v.sign(result)
 	v.state.B = result
 	v.cycles -= 5
 }
@@ -51,7 +51,11 @@ func (v *v1) MVI_B_D8() {
 }
 
 func (v *v1) RLC() {
-	v.setFlag(carryFlagPos, (v.state.A&0x80)>>7)
+	if (v.state.A & 0x80) == 0x80 {
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
+	}
 	v.state.A = (v.state.A << 1) | (v.state.A >> 7)
 	v.cycles -= 4
 }
@@ -59,7 +63,7 @@ func (v *v1) RLC() {
 func (v *v1) DAD_B() {
 	a := uint32(v.state.B)<<8 | uint32(v.state.C)
 	b := uint32(v.state.H)<<8 | uint32(v.state.L)
-	v.setFlag(carryFlagPos, carry16(a+b))
+	v.carry16(a + b)
 	r := uint16(a + b)
 	v.state.H = uint8(r >> 8)
 	v.state.L = uint8(r & 0xFF)

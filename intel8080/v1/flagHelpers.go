@@ -6,40 +6,52 @@ func init() {
 	initParityLookup()
 }
 
-func halfCarryAdd(a byte, b byte) byte {
+func (v *v1) halfCarryAdd(a byte, b byte) {
 	if (a&0x0F)+(b&0x0F) > 0x0F {
-		return 1
+		v.state.Flags |= halfCarryFlag
+	} else {
+		v.state.Flags &= ^halfCarryFlag
 	}
-	return 0
 }
 
-func halfCarrySub(a byte, b byte) byte {
+func (v *v1) halfCarrySub(a byte, b byte) {
 	if (a&0x0F)+(^b&0x0F)+1 > 0x0F {
-		return 1
+		v.state.Flags |= halfCarryFlag
+	} else {
+		v.state.Flags &= ^halfCarryFlag
 	}
-	return 0
 }
 
-func sign(r byte) byte {
-	return (r & 0x80) >> 7
+func (v *v1) sign(r byte) {
+	if r&0x80 == 0x80 {
+		v.state.Flags |= signFlag
+	} else {
+		v.state.Flags &= ^signFlag
+	}
 }
 
-func parity(r byte) byte {
-	return parityLookup[r]
+func (v *v1) parity(r byte) {
+	if parityLookup[r] == 1 {
+		v.state.Flags |= parityFlag
+	} else {
+		v.state.Flags &= ^parityFlag
+	}
 }
 
-func zero(r byte) byte {
+func (v *v1) zero(r byte) {
 	if r == 0 {
-		return 1
+		v.state.Flags |= zeroFlag
+	} else {
+		v.state.Flags &= ^zeroFlag
 	}
-	return 0
 }
 
-func carry16(r uint32) byte {
+func (v *v1) carry16(r uint32) {
 	if r > 0xFFFF {
-		return 1
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
 	}
-	return 0
 }
 
 func initParityLookup() {
