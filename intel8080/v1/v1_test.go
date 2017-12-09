@@ -22,7 +22,6 @@ func TestLXI_B_D16(t *testing.T) {
 	if cpu.state.B != 0xAB {
 		t.Fatal("Invalid value for register B")
 	}
-
 	if cpu.state.C != 0xCD {
 		t.Fatal("Invalid value for register C")
 	}
@@ -79,7 +78,6 @@ func TestINR_B(t *testing.T) {
 	if cpu.state.B != 0x10 {
 		t.Fatal("Invalid value in register B")
 	}
-
 	if cpu.state.Flags != 0x12 {
 		t.Fatal("Invalid value in Flags")
 	}
@@ -134,21 +132,35 @@ func TestRLC(t *testing.T) {
 	if cpu.state.Flags != 0x03 {
 		t.Fatal("Invalid Flags value")
 	}
-
 	if cpu.state.A != 0x55 {
 		t.Fatal("Invalid value in register A")
 	}
 }
 
-// func TestDAD_B(t *testing.T) {
-// 	cpu := initTest([]byte{
-// 		ops.DAD_B,
-// 		terminateOp,
-// 	})
+func TestDAD_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DAD_B,
+		terminateOp,
+	})
 
-// 	cpu.state.B = 0xFF
+	cpu.state.B = 0xFF
+	cpu.state.C = 0xFE
+	cpu.state.H = 0x00
+	cpu.state.L = 0x03
 
-// }
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0x00 {
+		t.Fatal("Invalid value in register H")
+	}
+	if cpu.state.L != 0x01 {
+		t.Fatal("Invalid value in register L")
+	}
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid Flags value")
+	}
+}
 
 func initTest(memory []byte) *v1 {
 	s := ops.State{
