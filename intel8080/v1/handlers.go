@@ -55,3 +55,13 @@ func (v *v1) RLC() {
 	v.state.A = (v.state.A << 1) | (v.state.A >> 7)
 	v.cycles -= 4
 }
+
+func (v *v1) DAD_B() {
+	a := uint32(v.state.B)<<8 | uint32(v.state.C)
+	b := uint32(v.state.H)<<8 | uint32(v.state.L)
+	v.setFlag(carryFlagPos, carry16(a+b))
+	r := uint16(a + b)
+	v.state.H = uint8(r >> 8)
+	v.state.L = uint8(r & 0xFF)
+	v.cycles -= 10
+}

@@ -35,6 +35,13 @@ func zero(r byte) byte {
 	return 0
 }
 
+func carry16(r uint32) byte {
+	if r > 0xFFFF {
+		return 1
+	}
+	return 0
+}
+
 func initParityLookup() {
 	p2 := func(n byte) []byte {
 		return []byte{n, n ^ 1, n ^ 1, n}

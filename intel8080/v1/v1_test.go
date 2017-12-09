@@ -140,6 +140,16 @@ func TestRLC(t *testing.T) {
 	}
 }
 
+// func TestDAD_B(t *testing.T) {
+// 	cpu := initTest([]byte{
+// 		ops.DAD_B,
+// 		terminateOp,
+// 	})
+
+// 	cpu.state.B = 0xFF
+
+// }
+
 func initTest(memory []byte) *v1 {
 	s := ops.State{
 		Memory: memory,
