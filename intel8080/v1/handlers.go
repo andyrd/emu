@@ -63,9 +63,15 @@ func (v *v1) RLC() {
 func (v *v1) DAD_B() {
 	a := uint32(v.state.B)<<8 | uint32(v.state.C)
 	b := uint32(v.state.H)<<8 | uint32(v.state.L)
-	v.setCarry16(a + b)
-	r := uint16(a + b)
+	r32 := a + b
+	v.setCarry16(r32)
+	r := uint16(r32)
 	v.state.H = uint8(r >> 8)
 	v.state.L = uint8(r & 0xFF)
 	v.cycles -= 10
+}
+
+func (v *v1) LDAX_B() {
+	v.state.A = v.state.Memory[uint16(v.state.B)<<8|uint16(v.state.C)]
+	v.cycles -= 7
 }

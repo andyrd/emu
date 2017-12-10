@@ -162,6 +162,24 @@ func TestDAD_B(t *testing.T) {
 	}
 }
 
+func TestLDAX_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.LDAX_B,
+		terminateOp,
+		0xAA,
+	})
+
+	cpu.state.B = 0x00
+	cpu.state.C = 0x02
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xAA {
+		t.Fatal("Invalid value in register A")
+	}
+}
+
 func initTest(memory []byte) *v1 {
 	s := ops.State{
 		Memory: memory,
