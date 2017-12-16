@@ -82,3 +82,39 @@ func (v *v1) DCX_B() {
 	v.state.C = byte(result)
 	v.cycles -= 5
 }
+
+func (v *v1) INR_C() {
+	result := v.state.C + 1
+	v.setHalfCarryAdd(v.state.C, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.C = result
+	v.cycles -= 5
+}
+
+func (v *v1) DCR_C() {
+	result := v.state.C - 1
+	v.setHalfCarrySub(v.state.C, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.C = result
+	v.cycles -= 5
+}
+
+func (v *v1) MVI_C_D8() {
+	v.state.C = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 7
+}
+
+func (v *v1) RRC() {
+	if (v.state.A & 0x01) == 0x01 {
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
+	}
+	v.state.A = (v.state.A >> 1) | (v.state.A << 7)
+	v.cycles -= 4
+}

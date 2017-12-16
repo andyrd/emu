@@ -197,6 +197,79 @@ func TestDCX_B(t *testing.T) {
 	}
 }
 
+func TestINR_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.INR_C,
+		terminateOp,
+	})
+
+	cpu.state.C = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x10 {
+		t.Fatal("Invalid value in register C")
+	}
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestDCR_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCR_C,
+		terminateOp,
+	})
+
+	cpu.state.C = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x0E {
+		t.Fatal("Invalid value in register C")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestMVI_C_D8(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MVI_C_D8,
+		0xF5,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0xF5 {
+		t.Fatal("Invalid value in register C")
+	}
+}
+
+func TestRRC(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.RRC,
+		terminateOp,
+	})
+
+	cpu.state.A = 0xAA
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.Flags != 0x02 {
+		t.Fatal("Invalid Flags value")
+	}
+	if cpu.state.A != 0x55 {
+		t.Fatal("Invalid value in register A")
+	}
+}
+
 func initTest(memory []byte) *v1 {
 	s := ops.State{
 		Memory: memory,
