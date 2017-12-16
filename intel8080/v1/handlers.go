@@ -75,3 +75,10 @@ func (v *v1) LDAX_B() {
 	v.state.A = v.state.Memory[uint16(v.state.B)<<8|uint16(v.state.C)]
 	v.cycles -= 7
 }
+
+func (v *v1) DCX_B() {
+	result := (uint16(v.state.B)<<8 | uint16(v.state.C)) - 1
+	v.state.B = byte(result >> 8)
+	v.state.C = byte(result)
+	v.cycles -= 5
+}

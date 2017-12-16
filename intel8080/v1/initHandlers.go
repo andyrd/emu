@@ -13,4 +13,5 @@ func (v *v1) initHandlers() {
 	v.handlers[ops.RLC] = v.RLC
 	v.handlers[ops.DAD_B] = v.DAD_B
 	v.handlers[ops.LDAX_B] = v.LDAX_B
+	v.handlers[ops.DCX_B] = v.DCX_B
 }

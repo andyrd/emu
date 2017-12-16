@@ -180,6 +180,23 @@ func TestLDAX_B(t *testing.T) {
 	}
 }
 
+func TestDCX_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCX_B,
+		terminateOp,
+	})
+
+	cpu.state.B = 0x98
+	cpu.state.C = 0x00
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.B != 0x97 || cpu.state.C != 0xFF {
+		t.Fatal("Invalid value in register pair BC")
+	}
+}
+
 func initTest(memory []byte) *v1 {
 	s := ops.State{
 		Memory: memory,
