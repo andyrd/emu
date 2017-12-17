@@ -118,3 +118,49 @@ func (v *v1) RRC() {
 	v.state.A = (v.state.A >> 1) | (v.state.A << 7)
 	v.cycles -= 4
 }
+
+func (v *v1) LXI_D_D16() {
+	v.state.E = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.state.D = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 10
+}
+
+func (v *v1) STAX_D() {
+	v.state.Memory[uint16(v.state.D)<<8|uint16(v.state.E)] = v.state.A
+	v.cycles -= 7
+}
+
+func (v *v1) INX_D() {
+	result := (uint16(v.state.D)<<8 | uint16(v.state.E)) + 1
+	v.state.D = byte(result >> 8)
+	v.state.E = byte(result)
+	v.cycles -= 5
+}
+
+func (v *v1) INR_D() {
+	result := v.state.D + 1
+	v.setHalfCarryAdd(v.state.D, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.D = result
+	v.cycles -= 5
+}
+
+func (v *v1) DCR_D() {
+	result := v.state.D - 1
+	v.setHalfCarrySub(v.state.D, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.D = result
+	v.cycles -= 5
+}
+
+func (v *v1) MVI_D_D8() {
+	v.state.D = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 7
+}
