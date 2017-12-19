@@ -164,3 +164,16 @@ func (v *v1) MVI_D_D8() {
 	v.state.PC++
 	v.cycles -= 7
 }
+
+func (v *v1) RAL() {
+	carryValue := v.state.Flags & carryFlag
+
+	if (v.state.A & 0x80) == 0x80 {
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
+	}
+
+	v.state.A = (v.state.A << 1) | carryValue
+	v.cycles -= 4
+}

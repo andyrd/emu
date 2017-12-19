@@ -399,3 +399,22 @@ func TestMVI_D_D8(t *testing.T) {
 		t.Fatal("Invalid value in register D")
 	}
 }
+
+func TestRAL(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.RAL,
+		terminateOp,
+	})
+
+	cpu.state.A = 0xAA
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid Flags value")
+	}
+	if cpu.state.A != 0x54 {
+		t.Fatal("Invalid value in register A")
+	}
+}
