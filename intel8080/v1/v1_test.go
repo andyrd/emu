@@ -418,3 +418,136 @@ func TestRAL(t *testing.T) {
 		t.Fatal("Invalid value in register A")
 	}
 }
+
+func TestDAD_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DAD_D,
+		terminateOp,
+	})
+
+	cpu.state.D = 0xFF
+	cpu.state.E = 0xFE
+	cpu.state.H = 0x00
+	cpu.state.L = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0x00 {
+		t.Fatal("Invalid value in register H")
+	}
+	if cpu.state.L != 0x01 {
+		t.Fatal("Invalid value in register L")
+	}
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid Flags value")
+	}
+}
+
+func TestLDAX_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.LDAX_D,
+		terminateOp,
+		0xAA,
+	})
+
+	cpu.state.D = 0x00
+	cpu.state.E = 0x02
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xAA {
+		t.Fatal("Invalid value in register A")
+	}
+}
+
+func TestDCX_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCX_D,
+		terminateOp,
+	})
+
+	cpu.state.D = 0x98
+	cpu.state.E = 0x00
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x97 || cpu.state.E != 0xFF {
+		t.Fatal("Invalid value in register pair DE")
+	}
+}
+
+func TestINR_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.INR_E,
+		terminateOp,
+	})
+
+	cpu.state.E = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x10 {
+		t.Fatal("Invalid value in register E")
+	}
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestDCR_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCR_E,
+		terminateOp,
+	})
+
+	cpu.state.E = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x0E {
+		t.Fatal("Invalid value in register E")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestMVI_E_D8(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MVI_E_D8,
+		0xF5,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0xF5 {
+		t.Fatal("Invalid value in register E")
+	}
+}
+
+func TestRAR(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.RAR,
+		terminateOp,
+	})
+
+	cpu.state.A = 0xAA
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.Flags != 0x02 {
+		t.Fatal("Invalid Flags value")
+	}
+	if cpu.state.A != 0x55 {
+		t.Fatal("Invalid value in register A")
+	}
+}

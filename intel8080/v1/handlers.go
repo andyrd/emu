@@ -177,3 +177,65 @@ func (v *v1) RAL() {
 	v.state.A = (v.state.A << 1) | carryValue
 	v.cycles -= 4
 }
+
+func (v *v1) DAD_D() {
+	a := uint32(v.state.D)<<8 | uint32(v.state.E)
+	b := uint32(v.state.H)<<8 | uint32(v.state.L)
+	r32 := a + b
+	v.setCarry16(r32)
+	r := uint16(r32)
+	v.state.H = uint8(r >> 8)
+	v.state.L = uint8(r & 0xFF)
+	v.cycles -= 10
+}
+
+func (v *v1) LDAX_D() {
+	v.state.A = v.state.Memory[uint16(v.state.D)<<8|uint16(v.state.E)]
+	v.cycles -= 7
+}
+
+func (v *v1) DCX_D() {
+	result := (uint16(v.state.D)<<8 | uint16(v.state.E)) - 1
+	v.state.D = byte(result >> 8)
+	v.state.E = byte(result)
+	v.cycles -= 5
+}
+
+func (v *v1) INR_E() {
+	result := v.state.E + 1
+	v.setHalfCarryAdd(v.state.E, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.E = result
+	v.cycles -= 5
+}
+
+func (v *v1) DCR_E() {
+	result := v.state.E - 1
+	v.setHalfCarrySub(v.state.E, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.E = result
+	v.cycles -= 5
+}
+
+func (v *v1) MVI_E_D8() {
+	v.state.E = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 7
+}
+
+func (v *v1) RAR() {
+	carryValue := v.state.Flags & carryFlag
+
+	if (v.state.A & 0x01) == 0x01 {
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
+	}
+
+	v.state.A = (carryValue << 7) | (v.state.A >> 1)
+	v.cycles -= 4
+}
