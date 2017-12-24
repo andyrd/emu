@@ -239,3 +239,57 @@ func (v *v1) RAR() {
 	v.state.A = (carryValue << 7) | (v.state.A >> 1)
 	v.cycles -= 4
 }
+
+func (v *v1) LXI_H_D16() {
+	v.state.L = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.state.H = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 10
+}
+
+func (v *v1) SHLD_A16() {
+	hi := v.state.Memory[v.state.PC]
+	v.state.PC++
+	lo := v.state.Memory[v.state.PC]
+	v.state.PC++
+
+	a16 := uint16(hi)<<8 | uint16(lo)
+	v.state.Memory[a16] = v.state.L
+	v.state.Memory[a16+1] = v.state.H
+
+	v.cycles -= 16
+}
+
+func (v *v1) INX_H() {
+	result := (uint16(v.state.H)<<8 | uint16(v.state.L)) + 1
+	v.state.H = byte(result >> 8)
+	v.state.L = byte(result)
+	v.cycles -= 5
+}
+
+func (v *v1) INR_H() {
+	result := v.state.H + 1
+	v.setHalfCarryAdd(v.state.H, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.H = result
+	v.cycles -= 5
+}
+
+func (v *v1) DCR_H() {
+	result := v.state.H - 1
+	v.setHalfCarrySub(v.state.H, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.H = result
+	v.cycles -= 5
+}
+
+func (v *v1) MVI_H_D8() {
+	v.state.H = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 7
+}

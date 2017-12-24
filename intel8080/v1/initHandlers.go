@@ -32,4 +32,11 @@ func (v *v1) initHandlers() {
 	v.handlers[ops.DCR_E] = v.DCR_E
 	v.handlers[ops.MVI_E_D8] = v.MVI_E_D8
 	v.handlers[ops.RAR] = v.RAR
+	v.handlers[ops.LXI_H_D16] = v.LXI_H_D16
+	v.handlers[ops.SHLD_A16] = v.SHLD_A16
+	v.handlers[ops.INX_H] = v.INX_H
+	v.handlers[ops.INR_H] = v.INR_H
+	v.handlers[ops.DCR_H] = v.DCR_H
+	v.handlers[ops.MVI_H_D8] = v.MVI_H_D8
+
 }

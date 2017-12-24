@@ -118,7 +118,3 @@ func (v *v1) READY() chan<- intel8080.Signal {
 func (v *v1) WAIT() <-chan intel8080.State {
 	return v.wait
 }
-
-// func (v *v1) setFlag(flagBit byte, value byte) {
-// 	v.state.Flags = v.state.Flags & ^(1<<flagBit) | (value << flagBit)
-// }

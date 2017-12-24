@@ -551,3 +551,110 @@ func TestRAR(t *testing.T) {
 		t.Fatal("Invalid value in register A")
 	}
 }
+
+func TestLXI_H_D16(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.LXI_H_D16, 0xCD, 0xAB,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0xAB {
+		t.Fatal("Invalid value for register D")
+	}
+	if cpu.state.L != 0xCD {
+		t.Fatal("Invalid value for register E")
+	}
+}
+
+func TestSHLD_A16(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.SHLD_A16
+	cpuMem[1] = 0x01
+	cpuMem[2] = 0x0A
+	cpuMem[3] = terminateOp
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0xAE
+	cpu.state.L = 0x29
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpuMem[0x010A] != 0x29 || cpuMem[0x010B] != 0xAE {
+		t.Fatal("Invalid memory values")
+	}
+}
+
+func TestINX_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.INX_H,
+		terminateOp,
+	})
+
+	cpu.state.H = 0x01
+	cpu.state.L = 0xFF
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0x02 || cpu.state.L != 0x00 {
+		t.Fatal("Invalid value in register pair HL")
+	}
+}
+
+func TestINR_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.INR_H,
+		terminateOp,
+	})
+
+	cpu.state.H = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0x10 {
+		t.Fatal("Invalid value in register H")
+	}
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestDCR_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCR_H,
+		terminateOp,
+	})
+
+	cpu.state.H = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0x0E {
+		t.Fatal("Invalid value in register H")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestMVI_H_D8(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MVI_H_D8,
+		0xF5,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0xF5 {
+		t.Fatal("Invalid value in register H")
+	}
+}
