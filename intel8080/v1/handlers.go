@@ -293,3 +293,24 @@ func (v *v1) MVI_H_D8() {
 	v.state.PC++
 	v.cycles -= 7
 }
+
+func (v *v1) DAA() {
+	if (v.state.A&0x0F) > 9 || v.halfCarrySet() {
+		v.setHalfCarryAdd(v.state.A, 6)
+		a := uint16(v.state.A) + uint16(6)
+		v.setCarry(a)
+		v.state.A = byte(a)
+	}
+
+	if ((v.state.A&0xF0)>>4) > 9 || v.carrySet() {
+		a := uint16(v.state.A) + uint16(0x60)
+		v.setCarry(a)
+		v.state.A = byte(a)
+	}
+
+	v.setSign(v.state.A)
+	v.setParity(v.state.A)
+	v.setZero(v.state.A)
+
+	v.cycles -= 4
+}

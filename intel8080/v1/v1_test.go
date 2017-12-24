@@ -658,3 +658,23 @@ func TestMVI_H_D8(t *testing.T) {
 		t.Fatal("Invalid value in register H")
 	}
 }
+
+func TestDAA(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DAA,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x9B
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x01 {
+		t.Fatal("Invalid value in register A")
+	}
+
+	if cpu.state.Flags != 0x13 {
+		t.Fatal("Invalid value in Flags")
+	}
+}

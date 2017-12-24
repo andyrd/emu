@@ -46,12 +46,28 @@ func (v *v1) setZero(r byte) {
 	}
 }
 
+func (v *v1) setCarry(r uint16) {
+	if r > 0xFF {
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
+	}
+}
+
 func (v *v1) setCarry16(r uint32) {
 	if r > 0xFFFF {
 		v.state.Flags |= carryFlag
 	} else {
 		v.state.Flags &= ^carryFlag
 	}
+}
+
+func (v *v1) halfCarrySet() bool {
+	return (v.state.Flags & halfCarryFlag) == halfCarryFlag
+}
+
+func (v *v1) carrySet() bool {
+	return (v.state.Flags & carryFlag) == carryFlag
 }
 
 func initParityLookup() {
