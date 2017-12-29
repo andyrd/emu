@@ -46,4 +46,8 @@ func (v *v1) initHandlers() {
 	v.handlers[ops.DCR_L] = v.DCR_L
 	v.handlers[ops.MVI_L_D8] = v.MVI_L_D8
 	v.handlers[ops.CMA] = v.CMA
+	v.handlers[ops.LXI_SP_D16] = v.LXI_SP_D16
+	v.handlers[ops.STA_A16] = v.STA_A16
+	v.handlers[ops.INX_SP] = v.INX_SP
+	v.handlers[ops.INR_M] = v.INR_M
 }

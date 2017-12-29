@@ -375,3 +375,38 @@ func (v *v1) CMA() {
 	v.state.A = ^v.state.A
 	v.cycles -= 4
 }
+
+func (v *v1) LXI_SP_D16() {
+	lo := v.state.Memory[v.state.PC]
+	v.state.PC++
+	hi := v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.state.SP = uint16(hi)<<8 | uint16(lo)
+	v.cycles -= 10
+}
+
+func (v *v1) STA_A16() {
+	lo := v.state.Memory[v.state.PC]
+	v.state.PC++
+	hi := v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.state.Memory[uint16(hi)<<8|uint16(lo)] = v.state.A
+	v.cycles -= 13
+}
+
+func (v *v1) INX_SP() {
+	v.state.SP++
+	v.cycles -= 5
+}
+
+func (v *v1) INR_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	memval := v.state.Memory[memloc]
+	result := memval + 1
+	v.setHalfCarryAdd(memval, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.Memory[memloc] = result
+	v.cycles -= 10
+}

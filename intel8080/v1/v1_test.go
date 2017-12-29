@@ -806,3 +806,70 @@ func TestCMA(t *testing.T) {
 		t.Fatal("Invalid value in register A")
 	}
 }
+
+func TestLXI_SP_D16(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.LXI_SP_D16, 0xCD, 0xAB,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.SP != 0xABCD {
+		t.Fatal("Invalid value for SP")
+	}
+}
+
+func TestSTA_A16(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.STA_A16
+	cpuMem[1] = 0xB3
+	cpuMem[2] = 0x05
+	cpuMem[3] = terminateOp
+
+	cpu := initTest(cpuMem)
+	cpu.state.A = 0x55
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpuMem[0x05B3] != 0x55 {
+		t.Fatal("Invalid value at memory location")
+	}
+}
+
+func TestINX_SP(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.INX_SP,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.SP != 0x01 {
+		t.Fatal("Invalid value in SP")
+	}
+}
+
+func TestINR_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.INR_M
+	cpuMem[3] = terminateOp
+	cpuMem[0x05B3] = 0x0F
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpuMem[0x05B3] != 0x10 {
+		t.Fatal("Invalid value at memory location")
+	}
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
