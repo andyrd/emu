@@ -950,3 +950,102 @@ func TestDAD_SP(t *testing.T) {
 		t.Fatal("Invalid Flags value")
 	}
 }
+
+func TestLDA_A16(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.LDA_A16
+	cpuMem[1] = 0xB3
+	cpuMem[2] = 0x05
+	cpuMem[3] = terminateOp
+	cpuMem[0x05B3] = 0x55
+
+	cpu := initTest(cpuMem)
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x55 {
+		t.Fatal("Invalid value in register A")
+	}
+}
+
+func TestDCX_SP(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCX_SP,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.SP != 0xFFFF {
+		t.Fatal("Invalid value in SP")
+	}
+}
+
+func TestINR_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.INR_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x10 {
+		t.Fatal("Invalid value in register A")
+	}
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestDCR_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DCR_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x0F
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x0E {
+		t.Fatal("Invalid value in register A")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestMVI_A_D8(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MVI_A_D8,
+		0xF5,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xF5 {
+		t.Fatal("Invalid value in register A")
+	}
+}
+
+func TestCMC(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.CMC,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid value in Flags")
+	}
+}

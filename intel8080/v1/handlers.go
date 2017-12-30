@@ -445,3 +445,48 @@ func (v *v1) DAD_SP() {
 	v.state.L = uint8(r & 0xFF)
 	v.cycles -= 10
 }
+
+func (v *v1) LDA_A16() {
+	lo := v.state.Memory[v.state.PC]
+	v.state.PC++
+	hi := v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.state.A = v.state.Memory[uint16(hi)<<8|uint16(lo)]
+	v.cycles -= 13
+}
+
+func (v *v1) DCX_SP() {
+	v.state.SP--
+	v.cycles -= 5
+}
+
+func (v *v1) INR_A() {
+	result := v.state.A + 1
+	v.setHalfCarryAdd(v.state.A, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.A = result
+	v.cycles -= 5
+}
+
+func (v *v1) DCR_A() {
+	result := v.state.A - 1
+	v.setHalfCarrySub(v.state.A, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.A = result
+	v.cycles -= 5
+}
+
+func (v *v1) MVI_A_D8() {
+	v.state.A = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 7
+}
+
+func (v *v1) CMC() {
+	v.state.Flags ^= carryFlag
+	v.cycles -= 4
+}
