@@ -410,3 +410,38 @@ func (v *v1) INR_M() {
 	v.state.Memory[memloc] = result
 	v.cycles -= 10
 }
+
+func (v *v1) DCR_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	memval := v.state.Memory[memloc]
+	result := memval - 1
+	v.setHalfCarrySub(memval, 1)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.Memory[memloc] = result
+	v.cycles -= 10
+}
+
+func (v *v1) MVI_M_D8() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.Memory[v.state.PC]
+	v.state.PC++
+	v.cycles -= 10
+}
+
+func (v *v1) STC() {
+	v.state.Flags |= carryFlag
+	v.cycles -= 4
+}
+
+func (v *v1) DAD_SP() {
+	a := uint32(v.state.SP)
+	b := uint32(v.state.H)<<8 | uint32(v.state.L)
+	r32 := a + b
+	v.setCarry16(r32)
+	r := uint16(r32)
+	v.state.H = uint8(r >> 8)
+	v.state.L = uint8(r & 0xFF)
+	v.cycles -= 10
+}

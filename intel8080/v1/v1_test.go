@@ -856,7 +856,7 @@ func TestINX_SP(t *testing.T) {
 func TestINR_M(t *testing.T) {
 	cpuMem := make([]byte, 0xFFFF)
 	cpuMem[0] = ops.INR_M
-	cpuMem[3] = terminateOp
+	cpuMem[1] = terminateOp
 	cpuMem[0x05B3] = 0x0F
 
 	cpu := initTest(cpuMem)
@@ -871,5 +871,82 @@ func TestINR_M(t *testing.T) {
 	}
 	if cpu.state.Flags != 0x12 {
 		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestDCR_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.DCR_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x0F
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpuMem[0x05B3] != 0x0E {
+		t.Fatal("Invalid value at memory location")
+	}
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestMVI_M_D8(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.MVI_M_D8
+	cpuMem[1] = 0x0F
+	cpuMem[2] = terminateOp
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpuMem[0x05B3] != 0x0F {
+		t.Fatal("Invalid value at memory location")
+	}
+}
+
+func TestSTC(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.STC,
+		terminateOp,
+	})
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid value in flags")
+	}
+}
+
+func TestDAD_SP(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.DAD_SP,
+		terminateOp,
+	})
+
+	cpu.state.SP = 0xFFFE
+	cpu.state.H = 0x00
+	cpu.state.L = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.H != 0x00 {
+		t.Fatal("Invalid value in register H")
+	}
+	if cpu.state.L != 0x01 {
+		t.Fatal("Invalid value in register L")
+	}
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid Flags value")
 	}
 }
