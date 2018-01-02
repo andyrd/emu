@@ -1179,3 +1179,133 @@ func TestMOV_B_A(t *testing.T) {
 		t.Fatal("Invalid value in register")
 	}
 }
+
+func TestMOV_C_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_B,
+		terminateOp,
+	})
+
+	cpu.state.B = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_C,
+		terminateOp,
+	})
+
+	cpu.state.C = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_D,
+		terminateOp,
+	})
+
+	cpu.state.D = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_E,
+		terminateOp,
+	})
+
+	cpu.state.E = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_H,
+		terminateOp,
+	})
+
+	cpu.state.H = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_L,
+		terminateOp,
+	})
+
+	cpu.state.L = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.MOV_C_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x0F
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x0F {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_C_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_C_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
