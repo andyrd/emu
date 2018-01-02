@@ -490,3 +490,43 @@ func (v *v1) CMC() {
 	v.state.Flags ^= carryFlag
 	v.cycles -= 4
 }
+
+func (v *v1) MOV_B_B() {
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_B_C() {
+	v.state.B = v.state.C
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_B_D() {
+	v.state.B = v.state.D
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_B_E() {
+	v.state.B = v.state.E
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_B_H() {
+	v.state.B = v.state.H
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_B_L() {
+	v.state.B = v.state.L
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_B_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.B = v.state.Memory[memloc]
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_B_A() {
+	v.state.B = v.state.A
+	v.cycles -= 5
+}
