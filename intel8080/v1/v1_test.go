@@ -7,7 +7,7 @@ import (
 	ops "github.com/andyrd/emu/intel8080"
 )
 
-// repurpose an unused opcode to termiate the test
+// repurpose an alternate NOP to termiate the test
 const terminateOp = 0x08
 
 func initTest(memory []byte) *v1 {
@@ -1306,6 +1306,268 @@ func TestMOV_C_A(t *testing.T) {
 	<-cpu.done
 
 	if cpu.state.C != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_B,
+		terminateOp,
+	})
+
+	cpu.state.B = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_C,
+		terminateOp,
+	})
+
+	cpu.state.C = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_D,
+		terminateOp,
+	})
+
+	cpu.state.D = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_E,
+		terminateOp,
+	})
+
+	cpu.state.E = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_H,
+		terminateOp,
+	})
+
+	cpu.state.H = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_L,
+		terminateOp,
+	})
+
+	cpu.state.L = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.MOV_D_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x0F
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x0F {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_D_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_D_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.D != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+//////
+
+func TestMOV_E_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_B,
+		terminateOp,
+	})
+
+	cpu.state.B = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_C,
+		terminateOp,
+	})
+
+	cpu.state.C = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_D,
+		terminateOp,
+	})
+
+	cpu.state.D = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_E,
+		terminateOp,
+	})
+
+	cpu.state.E = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_H,
+		terminateOp,
+	})
+
+	cpu.state.H = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_L,
+		terminateOp,
+	})
+
+	cpu.state.L = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.MOV_E_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x0F
+
+	cpu := initTest(cpuMem)
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x0F {
+		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestMOV_E_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.MOV_E_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x05
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.E != 0x05 {
 		t.Fatal("Invalid value in register")
 	}
 }
