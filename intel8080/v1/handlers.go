@@ -650,3 +650,83 @@ func (v *v1) MOV_E_A() {
 	v.state.E = v.state.A
 	v.cycles -= 5
 }
+
+func (v *v1) MOV_H_B() {
+	v.state.H = v.state.B
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_H_C() {
+	v.state.H = v.state.C
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_H_D() {
+	v.state.H = v.state.D
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_H_E() {
+	v.state.H = v.state.E
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_H_H() {
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_H_L() {
+	v.state.H = v.state.L
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_H_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.H = v.state.Memory[memloc]
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_H_A() {
+	v.state.H = v.state.A
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_B() {
+	v.state.L = v.state.B
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_C() {
+	v.state.L = v.state.C
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_D() {
+	v.state.L = v.state.D
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_E() {
+	v.state.L = v.state.E
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_H() {
+	v.state.L = v.state.H
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_L() {
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_L_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.L = v.state.Memory[memloc]
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_L_A() {
+	v.state.L = v.state.A
+	v.cycles -= 5
+}

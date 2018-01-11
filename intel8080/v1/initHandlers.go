@@ -4,6 +4,13 @@ import ops "github.com/andyrd/emu/intel8080"
 
 func (v *v1) initHandlers() {
 	v.handlers[ops.NOP] = v.NOP
+	v.handlers[0x08] = v.NOP
+	v.handlers[0x10] = v.NOP
+	v.handlers[0x18] = v.NOP
+	v.handlers[0x20] = v.NOP
+	v.handlers[0x28] = v.NOP
+	v.handlers[0x30] = v.NOP
+	v.handlers[0x38] = v.NOP
 	v.handlers[ops.LXI_B_D16] = v.LXI_B_D16
 	v.handlers[ops.STAX_B] = v.STAX_B
 	v.handlers[ops.INX_B] = v.INX_B
@@ -92,4 +99,20 @@ func (v *v1) initHandlers() {
 	v.handlers[ops.MOV_E_L] = v.MOV_E_L
 	v.handlers[ops.MOV_E_M] = v.MOV_E_M
 	v.handlers[ops.MOV_E_A] = v.MOV_E_A
+	v.handlers[ops.MOV_H_B] = v.MOV_H_B
+	v.handlers[ops.MOV_H_C] = v.MOV_H_C
+	v.handlers[ops.MOV_H_D] = v.MOV_H_D
+	v.handlers[ops.MOV_H_E] = v.MOV_H_E
+	v.handlers[ops.MOV_H_H] = v.MOV_H_H
+	v.handlers[ops.MOV_H_L] = v.MOV_H_L
+	v.handlers[ops.MOV_H_M] = v.MOV_H_M
+	v.handlers[ops.MOV_H_A] = v.MOV_H_A
+	v.handlers[ops.MOV_L_B] = v.MOV_L_B
+	v.handlers[ops.MOV_L_C] = v.MOV_L_C
+	v.handlers[ops.MOV_L_D] = v.MOV_L_D
+	v.handlers[ops.MOV_L_E] = v.MOV_L_E
+	v.handlers[ops.MOV_L_H] = v.MOV_L_H
+	v.handlers[ops.MOV_L_L] = v.MOV_L_L
+	v.handlers[ops.MOV_L_M] = v.MOV_L_M
+	v.handlers[ops.MOV_L_A] = v.MOV_L_A
 }
