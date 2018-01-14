@@ -730,3 +730,90 @@ func (v *v1) MOV_L_A() {
 	v.state.L = v.state.A
 	v.cycles -= 5
 }
+
+func (v *v1) MOV_M_B() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.B
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_M_C() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.C
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_M_D() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.D
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_M_E() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.E
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_M_H() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.H
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_M_L() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.L
+	v.cycles -= 7
+}
+
+func (v *v1) HLT() {
+	// TODO
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_M_A() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.Memory[memloc] = v.state.A
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_A_B() {
+	v.state.A = v.state.B
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_A_C() {
+	v.state.A = v.state.C
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_A_D() {
+	v.state.A = v.state.D
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_A_E() {
+	v.state.A = v.state.E
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_A_H() {
+	v.state.A = v.state.H
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_A_L() {
+	v.state.A = v.state.L
+	v.cycles -= 5
+}
+
+func (v *v1) MOV_A_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.state.A = v.state.Memory[memloc]
+	v.cycles -= 7
+}
+
+func (v *v1) MOV_A_A() {
+	v.cycles -= 5
+}
