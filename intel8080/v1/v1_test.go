@@ -1938,21 +1938,6 @@ func TestMOV_M_L(t *testing.T) {
 
 func TestHLT(t *testing.T) {
 	// TODO
-	// cpuMem := make([]byte, 0xFFFF)
-	// cpuMem[0] = ops.MOV_M_M
-	// cpuMem[1] = terminateOp
-	// cpuMem[0x05B3] = 0x0F
-
-	// cpu := initTest(cpuMem)
-	// cpu.state.H = 0x05
-	// cpu.state.L = 0xB3
-
-	// cpu.PowerOn()
-	// <-cpu.done
-
-	// if cpu.state.L != 0x0F {
-	// 	t.Fatal("Invalid value in register")
-	// }
 }
 
 func TestMOV_M_A(t *testing.T) {
@@ -2100,5 +2085,131 @@ func TestMOV_A_A(t *testing.T) {
 
 	if cpu.state.A != 0x05 {
 		t.Fatal("Invalid value in register")
+	}
+}
+
+func TestADD_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_B,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.B = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x9A {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x96 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADD_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_C,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.C = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x9A {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x96 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADD_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_D,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.D = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x9A {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x96 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADD_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_E,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.E = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x9A {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x96 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADD_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_H,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.H = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x9A {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x96 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADD_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_L,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.L = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x9A {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x96 {
+		t.Fatal("Invalid value in Flags")
 	}
 }

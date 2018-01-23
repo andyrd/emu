@@ -131,4 +131,10 @@ func (v *v1) initHandlers() {
 	v.handlers[ops.MOV_A_L] = v.MOV_A_L
 	v.handlers[ops.MOV_A_M] = v.MOV_A_M
 	v.handlers[ops.MOV_A_A] = v.MOV_A_A
+	v.handlers[ops.ADD_B] = v.ADD_B
+	v.handlers[ops.ADD_C] = v.ADD_C
+	v.handlers[ops.ADD_D] = v.ADD_D
+	v.handlers[ops.ADD_E] = v.ADD_E
+	v.handlers[ops.ADD_H] = v.ADD_H
+	v.handlers[ops.ADD_L] = v.ADD_L
 }

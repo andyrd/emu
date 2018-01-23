@@ -768,7 +768,15 @@ func (v *v1) MOV_M_L() {
 }
 
 func (v *v1) HLT() {
-	// TODO
+	select {
+	case <-v.done:
+		return
+	case <-v.int:
+		// TODO: handle interrupts
+	case <-v.reset:
+		// TODO: handle reset
+	}
+
 	v.cycles -= 7
 }
 
@@ -816,4 +824,45 @@ func (v *v1) MOV_A_M() {
 
 func (v *v1) MOV_A_A() {
 	v.cycles -= 5
+}
+
+func (v *v1) addAndSet(reg byte) {
+	result16 := uint16(v.state.A) + uint16(reg)
+	result := byte(result16)
+	v.setCarry(result16)
+	v.setHalfCarryAdd(v.state.A, reg)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.A = result
+}
+
+func (v *v1) ADD_B() {
+	v.addAndSet(v.state.B)
+	v.cycles -= 4
+}
+
+func (v *v1) ADD_C() {
+	v.addAndSet(v.state.C)
+	v.cycles -= 4
+}
+
+func (v *v1) ADD_D() {
+	v.addAndSet(v.state.D)
+	v.cycles -= 4
+}
+
+func (v *v1) ADD_E() {
+	v.addAndSet(v.state.E)
+	v.cycles -= 4
+}
+
+func (v *v1) ADD_H() {
+	v.addAndSet(v.state.H)
+	v.cycles -= 4
+}
+
+func (v *v1) ADD_L() {
+	v.addAndSet(v.state.L)
+	v.cycles -= 4
 }

@@ -70,11 +70,11 @@ func (v *v1) mainLoop() {
 		case <-v.done:
 			return
 		case <-v.int:
-			// handle interrupts
+			// TODO: handle interrupts
 		case <-v.reset:
-			// handle reset
+			// TODO: handle reset
 		case <-v.ready:
-			// handle ready
+			// TODO: handle ready
 		default:
 			if v.cycles >= 0 {
 				op := v.state.Memory[v.state.PC]
