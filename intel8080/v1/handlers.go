@@ -866,3 +866,14 @@ func (v *v1) ADD_L() {
 	v.addAndSet(v.state.L)
 	v.cycles -= 4
 }
+
+func (v *v1) ADD_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.addAndSet(v.state.Memory[memloc])
+	v.cycles -= 7
+}
+
+func (v *v1) ADD_A() {
+	v.addAndSet(v.state.A)
+	v.cycles -= 4
+}

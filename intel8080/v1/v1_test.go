@@ -2213,3 +2213,46 @@ func TestADD_L(t *testing.T) {
 		t.Fatal("Invalid value in Flags")
 	}
 }
+
+func TestADD_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.ADD_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x0F
+
+	cpu := initTest(cpuMem)
+	cpu.state.A = 0x0F
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x1E {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x16 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADD_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADD_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0xAC
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x58 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x13 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
