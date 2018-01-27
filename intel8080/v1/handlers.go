@@ -877,3 +877,56 @@ func (v *v1) ADD_A() {
 	v.addAndSet(v.state.A)
 	v.cycles -= 4
 }
+
+func (v *v1) addWithCarryAndSet(reg byte) {
+	carry := v.getCarry()
+	result16 := uint16(v.state.A) + uint16(reg) + uint16(carry)
+	result := byte(result16)
+	v.setCarry(result16)
+	v.setHalfCarryAddWithCarry(v.state.A, reg, carry)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.A = result
+}
+
+func (v *v1) ADC_B() {
+	v.addWithCarryAndSet(v.state.B)
+	v.cycles -= 4
+}
+
+func (v *v1) ADC_C() {
+	v.addWithCarryAndSet(v.state.C)
+	v.cycles -= 4
+}
+
+func (v *v1) ADC_D() {
+	v.addWithCarryAndSet(v.state.D)
+	v.cycles -= 4
+}
+
+func (v *v1) ADC_E() {
+	v.addWithCarryAndSet(v.state.E)
+	v.cycles -= 4
+}
+
+func (v *v1) ADC_H() {
+	v.addWithCarryAndSet(v.state.H)
+	v.cycles -= 4
+}
+
+func (v *v1) ADC_L() {
+	v.addWithCarryAndSet(v.state.L)
+	v.cycles -= 4
+}
+
+func (v *v1) ADC_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.addWithCarryAndSet(v.state.Memory[memloc])
+	v.cycles -= 7
+}
+
+func (v *v1) ADC_A() {
+	v.addWithCarryAndSet(v.state.A)
+	v.cycles -= 4
+}

@@ -2256,3 +2256,179 @@ func TestADD_A(t *testing.T) {
 		t.Fatal("Invalid value in Flags")
 	}
 }
+
+func TestADC_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_B,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.B = 0x3D
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_C,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.C = 0x3D
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_D,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.D = 0x3D
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_E,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.E = 0x3D
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_H,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.H = 0x3D
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_L,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.L = 0x3D
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.ADC_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x3D
+
+	cpu := initTest(cpuMem)
+	cpu.state.A = 0x42
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x80 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x92 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestADC_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.ADC_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0xAC
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x58 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x13 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
