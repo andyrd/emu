@@ -2432,3 +2432,346 @@ func TestADC_A(t *testing.T) {
 		t.Fatal("Invalid value in Flags")
 	}
 }
+
+func TestSUB_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_B,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x6C
+	cpu.state.B = 0x2E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x3E {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x02 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_C,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x2E
+	cpu.state.C = 0x6C
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xC2 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x93 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_D,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x2E
+	cpu.state.D = 0x6C
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xC2 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x93 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_E,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x2E
+	cpu.state.E = 0x6C
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xC2 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x93 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_H,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x2E
+	cpu.state.H = 0x6C
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xC2 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x93 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_L,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x2E
+	cpu.state.L = 0x6C
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0xC2 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x93 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.SUB_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x3D
+
+	cpu := initTest(cpuMem)
+	cpu.state.A = 0x42
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x06 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSUB_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SUB_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x3E
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x56 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_B(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_B,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.B = 0xFF
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x42 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x07 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_C(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_C,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x42
+	cpu.state.C = 0xFE
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x43 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x03 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_D(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_D,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x04
+	cpu.state.D = 0x02
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x01 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_E(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_E,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x04
+	cpu.state.E = 0x02
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x02 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_H(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_H,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x04
+	cpu.state.H = 0x02
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x01 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_L(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_L,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x04
+	cpu.state.L = 0x02
+	cpu.state.Flags = 0x03
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x01 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x12 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_M(t *testing.T) {
+	cpuMem := make([]byte, 0xFFFF)
+	cpuMem[0] = ops.SBB_M
+	cpuMem[1] = terminateOp
+	cpuMem[0x05B3] = 0x3D
+
+	cpu := initTest(cpuMem)
+	cpu.state.A = 0x42
+	cpu.state.H = 0x05
+	cpu.state.L = 0xB3
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0x05 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x06 {
+		t.Fatal("Invalid value in Flags")
+	}
+}
+
+func TestSBB_A(t *testing.T) {
+	cpu := initTest([]byte{
+		ops.SBB_A,
+		terminateOp,
+	})
+
+	cpu.state.A = 0x04
+
+	cpu.PowerOn()
+	<-cpu.done
+
+	if cpu.state.A != 0 {
+		t.Fatal("Invalid value in register")
+	}
+
+	if cpu.state.Flags != 0x56 {
+		t.Fatal("Invalid value in Flags")
+	}
+}

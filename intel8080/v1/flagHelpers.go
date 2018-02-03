@@ -62,8 +62,12 @@ func (v *v1) setCarry(r uint16) {
 	}
 }
 
-func (v *v1) getCarry() byte {
-	return v.state.Flags & carryFlag
+func (v *v1) setCarrySub(a byte, b byte) {
+	if b > a {
+		v.state.Flags |= carryFlag
+	} else {
+		v.state.Flags &= ^carryFlag
+	}
 }
 
 func (v *v1) setCarry16(r uint32) {
@@ -72,6 +76,10 @@ func (v *v1) setCarry16(r uint32) {
 	} else {
 		v.state.Flags &= ^carryFlag
 	}
+}
+
+func (v *v1) carry() byte {
+	return v.state.Flags & carryFlag
 }
 
 func (v *v1) halfCarrySet() bool {

@@ -879,7 +879,7 @@ func (v *v1) ADD_A() {
 }
 
 func (v *v1) addWithCarryAndSet(reg byte) {
-	carry := v.getCarry()
+	carry := v.carry()
 	result16 := uint16(v.state.A) + uint16(reg) + uint16(carry)
 	result := byte(result16)
 	v.setCarry(result16)
@@ -928,5 +928,107 @@ func (v *v1) ADC_M() {
 
 func (v *v1) ADC_A() {
 	v.addWithCarryAndSet(v.state.A)
+	v.cycles -= 4
+}
+
+func (v *v1) subAndSet(reg byte) {
+	result := v.state.A - reg
+	v.setCarrySub(v.state.A, reg)
+	v.setHalfCarrySub(v.state.A, reg)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.A = result
+}
+
+func (v *v1) SUB_B() {
+	v.subAndSet(v.state.B)
+	v.cycles -= 4
+}
+
+func (v *v1) SUB_C() {
+	v.subAndSet(v.state.C)
+	v.cycles -= 4
+}
+
+func (v *v1) SUB_D() {
+	v.subAndSet(v.state.D)
+	v.cycles -= 4
+}
+
+func (v *v1) SUB_E() {
+	v.subAndSet(v.state.E)
+	v.cycles -= 4
+}
+
+func (v *v1) SUB_H() {
+	v.subAndSet(v.state.H)
+	v.cycles -= 4
+}
+
+func (v *v1) SUB_L() {
+	v.subAndSet(v.state.L)
+	v.cycles -= 4
+}
+
+func (v *v1) SUB_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.subAndSet(v.state.Memory[memloc])
+	v.cycles -= 7
+}
+
+func (v *v1) SUB_A() {
+	v.subAndSet(v.state.A)
+	v.cycles -= 4
+}
+
+func (v *v1) subWithCarryAndSet(reg byte) {
+	result := v.state.A - (reg + v.carry())
+	v.setCarrySub(v.state.A, reg)
+	v.setHalfCarrySub(v.state.A, reg)
+	v.setParity(result)
+	v.setZero(result)
+	v.setSign(result)
+	v.state.A = result
+}
+
+func (v *v1) SBB_B() {
+	v.subWithCarryAndSet(v.state.B)
+	v.cycles -= 4
+}
+
+func (v *v1) SBB_C() {
+	v.subWithCarryAndSet(v.state.C)
+	v.cycles -= 4
+}
+
+func (v *v1) SBB_D() {
+	v.subWithCarryAndSet(v.state.D)
+	v.cycles -= 4
+}
+
+func (v *v1) SBB_E() {
+	v.subWithCarryAndSet(v.state.E)
+	v.cycles -= 4
+}
+
+func (v *v1) SBB_H() {
+	v.subWithCarryAndSet(v.state.H)
+	v.cycles -= 4
+}
+
+func (v *v1) SBB_L() {
+	v.subWithCarryAndSet(v.state.L)
+	v.cycles -= 4
+}
+
+func (v *v1) SBB_M() {
+	memloc := uint16(v.state.H)<<8 | uint16(v.state.L)
+	v.subWithCarryAndSet(v.state.Memory[memloc])
+	v.cycles -= 7
+}
+
+func (v *v1) SBB_A() {
+	v.subWithCarryAndSet(v.state.A)
 	v.cycles -= 4
 }

@@ -147,4 +147,20 @@ func (v *v1) initHandlers() {
 	v.handlers[ops.ADC_L] = v.ADC_L
 	v.handlers[ops.ADC_M] = v.ADC_M
 	v.handlers[ops.ADC_A] = v.ADC_A
+	v.handlers[ops.SUB_B] = v.SUB_B
+	v.handlers[ops.SUB_C] = v.SUB_C
+	v.handlers[ops.SUB_D] = v.SUB_D
+	v.handlers[ops.SUB_E] = v.SUB_E
+	v.handlers[ops.SUB_H] = v.SUB_H
+	v.handlers[ops.SUB_L] = v.SUB_L
+	v.handlers[ops.SUB_M] = v.SUB_M
+	v.handlers[ops.SUB_A] = v.SUB_A
+	v.handlers[ops.SBB_B] = v.SBB_B
+	v.handlers[ops.SBB_C] = v.SBB_C
+	v.handlers[ops.SBB_D] = v.SBB_D
+	v.handlers[ops.SBB_E] = v.SBB_E
+	v.handlers[ops.SBB_H] = v.SBB_H
+	v.handlers[ops.SBB_L] = v.SBB_L
+	v.handlers[ops.SBB_M] = v.SBB_M
+	v.handlers[ops.SBB_A] = v.SBB_A
 }
